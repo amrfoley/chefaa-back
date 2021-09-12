@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\IProductRepository;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    protected $productRepo;
+
+    public function __construct(IProductRepository $productRepository)
+    {
+        $this->productRepo = $productRepository;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::paginate(25);
+        $products = $this->productRepo->paginate(25);
 
         return view('products.index', compact('products'));
     }
@@ -45,11 +51,11 @@ class ProductController extends Controller
             'sku'           => 'required|unique:products,sku'
         ]);
 
-        $newProduct = Product::create($data);
+        $product = $this->productRepo->create($data);
 
         if($request->hasFile('image'))
         {
-            $this->saveImage($newProduct, $request->file('image'));
+            $this->productRepo->saveImage($request->file('image'), $product->id);
         }
 
         return redirect()->route('products.index')->with('success', 'Product Created');
@@ -61,9 +67,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($productID)
     {
+        $product = $this->productRepo->find($productID);
         $pharmacies = $product->pharmacies()->paginate(10);
+
         return view('products.show', compact(['product', 'pharmacies']));
     }
 
@@ -73,8 +81,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($productID)
     {
+        $product = $this->productRepo->find($productID);
         return view('products.edit', compact('product'));
     }
 
@@ -85,24 +94,26 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $productID)
     {
         $data = $request->validate([
             'title'         => 'required|max:160',
             'description'   => 'required|max:260',
             'image'         => 'image|mimes:jpeg,png,jpg,gif,svg|max:200',
-            'sku'           => 'required|unique:products,sku,'.$product->id
+            'sku'           => 'required|unique:products,sku,'.$productID
         ]);
 
-        $product->update($data);
+        unset($data['image']);
+
+        $this->productRepo->update($data, $productID);
 
         if($request->hasFile('image'))
         {
-            $this->saveImage($product, $request->file('image'));
+            $this->productRepo->saveImage($request->file('image'), $productID);
         }
 
         return redirect()
-            ->route('products.show', ['product' => $product])
+            ->route('products.show', ['product' => $productID])
             ->with('success', 'Product updated');
     }
 
@@ -119,30 +130,8 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    protected function saveImage(Product $product, $img)
-    {
-        // Get filename with the extension
-        $filenameWithExt = $img->getClientOriginalName();
-        // Get just filename
-        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-        // Get just ext
-        $extension = $img->getClientOriginalExtension();
-        // Filename to store
-        $fileNameToStore= $filename.'_'.time().'.'.$extension;
-        // Upload Image
-        $img->storeAs('public/images', $fileNameToStore);
-
-        $product->image = 'images/'.$fileNameToStore;
-        $product->save();
-
-        return true;
-    }
-
     public function search(Request $request)
     {
-        return Product::select(['id', 'title'])
-            ->where('title', 'LIKE', "%$request->q%")
-            ->orWhere('sku', 'LIKE', "%$request->q%")
-            ->get();
+        return $this->productRepo->search($request->search);
     }
 }
