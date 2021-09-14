@@ -47,7 +47,7 @@
                             <th scope="row">{{ $loop->index + 1 }}</th>
                             <td>{{ $product->title }}</td>
                             <td>
-                                <img src="{{ (strpos($product->image, 'http') === false) ? asset('storage/'.$product->image) : $product->image.'?random='.$product->id }}" height="80px" alt="product-image" />
+                                <img src="{{ $product->image.'?random='.$product->id }}" height="80px" alt="product-image" />
                             </td>
                             <td>{{ $product->sku }}</td>
                             <td>{{ $product->pivot->quantity }}</td>

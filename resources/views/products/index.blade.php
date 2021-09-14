@@ -26,7 +26,7 @@
                             <td>{{ $product->title }}</td>
                             <td>{{ $product->description }}</td>
                             <td>
-                                <img src="{{ (strpos($product->image, 'http') === false) ? asset('storage/'.$product->image) : $product->image.'?random='.$product->id }}" style="max-width: 180px" alt="product-image" />
+                                <img src="{{ $product->image.'?random='.$product->id }}" style="max-width: 180px" alt="product-image" />
                             </td>
                             <td>{{ $product->sku }}</td>
                             <td>

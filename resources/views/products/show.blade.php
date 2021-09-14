@@ -13,7 +13,7 @@
             <div class="card mb-5">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="{{ (strpos($product->image, 'http') === false) ? asset('storage/'.$product->image) : $product->image }}" class="card-img-top" alt="product-image" />
+                        <img src="{{ $product->image }}" class="card-img-top" alt="product-image" />
                     </div>
                     <div class="col-md-8">
                     <div class="card-body">

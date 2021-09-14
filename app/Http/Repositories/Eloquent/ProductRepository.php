@@ -14,20 +14,20 @@ class ProductRepository extends BaseRepository implements IProductRepository
         $this->model = $product;
     }
 
-    public function with($productID, $relation, $relationID)
+    public function with($productID, $relation, $options, $relationID)
     {
         $product = $this->model->find($productID);
 
         return $product->$relation ? 
-            $product->setRelation($relation, $product->$relation()->find($relationID)) : $product;
+            $product->setRelation($relation, $product->$relation()->where($options)->find($relationID)) : $product;
     }
 
-    public function withPaginated($productID, $relation, $perPage)
+    public function withPaginated($productID, $relation, $options, $perPage)
     {
         $product = $this->model->find($productID);
 
         return $product->$relation ?
-            $product->setRelation($relation, $product->$relation()->paginate($perPage)) : $product;
+            $product->setRelation($relation, $product->$relation()->where($options)->paginate($perPage)) : $product;
     }
 
     public function saveImage($imageFile, $productID)
@@ -62,5 +62,13 @@ class ProductRepository extends BaseRepository implements IProductRepository
             ->where('title', 'LIKE', "%$query%")
             ->orwhere('sku', 'LIKE', "%$query%")
             ->get();
+    }
+
+    public function searchPaginated($query, $perPage = 25)
+    {
+        return $this->model
+            ->where('title', 'LIKE', "%$query%")
+            ->orwhere('sku', 'LIKE', "%$query%")
+            ->paginate($perPage);
     }
 }

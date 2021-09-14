@@ -20,4 +20,9 @@ class Product extends Model
             ->whereNull('pharmacy_product.deleted_at')
             ->withPivot('price', 'status', 'quantity');
     }
+
+    public function getImageAttribute($image)
+    {
+        return !empty($image) ? ((strpos($image, 'http') === false) ? asset('storage/'.$image) : $image) : '';
+    }
 }

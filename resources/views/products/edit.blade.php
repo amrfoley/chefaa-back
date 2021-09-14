@@ -31,7 +31,7 @@
                 accept="image/png, image/jpeg, image/jpg, image/gif"  style="height: 100%" />
         </div>
         <div class="my-4" id='img-upload'>
-            <img src="{{ (strpos($product->image, 'http') === false) ? asset('storage/'.$product->image) : (old('image') ?? $product->image) }}" alt="product-image" width="200px" />
+            <img src="{{ (old('image') ?? $product->image) }}" alt="product-image" width="200px" />
         </div>
     </div>
     <button type="submit" class="btn btn-lg btn-success mt-3">Save</button>

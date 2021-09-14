@@ -71,7 +71,7 @@ class ProductController extends Controller
     public function show($productID)
     {
         return view('products.show', [
-            'product' => $this->productRepo->withPaginated($productID, 'pharmacies', 10)
+            'product' => $this->productRepo->withPaginated($productID, 'pharmacies', [], 10)
         ]);
     }
 

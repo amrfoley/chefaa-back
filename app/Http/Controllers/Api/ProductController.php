@@ -22,69 +22,16 @@ class ProductController extends Controller
         ], 200);
     }
 
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'title'         => 'required|max:160',
-            'description'   => 'required|max:260',
-            'image'         => 'image|mimes:jpeg,png,jpg,gif,svg|max:200',
-            'sku'           => 'required|unique:products,sku'
-        ]);
-
-        $product = $this->productRepo->create($data);
-
-        if($request->hasFile('image'))
-        {
-            $this->productRepo->saveImage($request->file('image'), $product->id);
-        }
-
-        return response()->api(['success' => true], 200);
-    }
-
     public function show($productID)
     {
         return response()->json([
-            'product' => $this->productRepo->withPaginated($productID, 'pharmacies', 10)
+            'product' => $this->productRepo
+                ->withPaginated($productID, 'pharmacies', [['status', 1]], 10)
         ]);
-    }
-
-    public function edit($productID)
-    {
-        return response()->json([
-            'product' => $this->productRepo->find($productID)
-        ]);
-    }
-    
-    public function update(Request $request, $productID)
-    {
-        $data = $request->validate([
-            'title'         => 'required|max:160',
-            'description'   => 'required|max:260',
-            'image'         => 'image|mimes:jpeg,png,jpg,gif,svg|max:200',
-            'sku'           => 'required|unique:products,sku,'.$productID
-        ]);
-
-        unset($data['image']);
-
-        $this->productRepo->update($data, $productID);
-
-        if($request->hasFile('image'))
-        {
-            $this->productRepo->saveImage($request->file('image'), $productID);
-        }
-
-        return response()->api(['success' => true], 200);
-    }
-
-    public function destroy($productID)
-    {
-        $this->productRepo->delete($productID);
-
-        return response()->api(['success' => true], 200);
     }
 
     public function search(Request $request)
     {
-        return $this->productRepo->search($request->search);
+        return $this->productRepo->searchPaginated($request->search, 25);
     }
 }

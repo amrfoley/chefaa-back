@@ -20,7 +20,7 @@ class PharmachyProductRepository implements IPharmacyProductRepository
 
     public function delete($pharmacyID, $productID)
     {
-        return $this->model->where('pharmacy_id', $pharmacyID)->where('product_id', $productID)->destroy();
+        return $this->model->where('pharmacy_id', $pharmacyID)->where('product_id', $productID)->delete();
     }
 
     public function update($pharmacyID, $productID, $data)
