@@ -4,7 +4,6 @@ namespace App\Http\Repositories\Eloquent;
 use App\Models\Product;
 use Illuminate\Support\Facades\File;
 use App\Http\Repositories\IProductRepository;
-use Illuminate\Database\Eloquent\Model;
 
 class ProductRepository extends BaseRepository implements IProductRepository
 {
@@ -13,6 +12,22 @@ class ProductRepository extends BaseRepository implements IProductRepository
     public function __construct(Product $product)
     {
         $this->model = $product;
+    }
+
+    public function with($productID, $relation, $relationID)
+    {
+        $product = $this->model->find($productID);
+
+        return $product->$relation ? 
+            $product->setRelation($relation, $product->$relation()->find($relationID)) : $product;
+    }
+
+    public function withPaginated($productID, $relation, $perPage)
+    {
+        $product = $this->model->find($productID);
+
+        return $product->$relation ?
+            $product->setRelation($relation, $product->$relation()->paginate($perPage)) : $product;
     }
 
     public function saveImage($imageFile, $productID)

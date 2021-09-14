@@ -19,15 +19,15 @@
             </div>
             <div class="d-flex justify-content-between align-items-center">
                 <h3 class="py-3">
-                    @if($products->count() > 0)
-                        Has ({{ $products->total() }}) @choice('product|products', $products->total())
+                    @if($pharmacy->products->count() > 0)
+                        Has ({{ $pharmacy->products->total() }}) @choice('product|products', $pharmacy->products->total())
                     @else
                         No products available in this pharmacy
                     @endif
                 </h3>
                 <a href="{{ route('pharmacy.product.create', $pharmacy->id) }}" class="btn btn-lg btn-success">Import Product</a>
             </div>
-            @if($products->count() > 0)
+            @if($pharmacy->products->count() > 0)
                 <table class="table table-hover w-100">
                     <thead>
                         <tr>
@@ -42,7 +42,7 @@
                         </tr>
                     </thead>
                     <tbody>       
-                    @foreach($products as $product)         
+                    @foreach($pharmacy->products as $product)         
                         <tr>
                             <th scope="row">{{ $loop->index + 1 }}</th>
                             <td>{{ $product->title }}</td>
@@ -88,7 +88,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center mt-3">
-                    {!! $products->links("pagination::bootstrap-4") !!}
+                    {!! $pharmacy->products->links("pagination::bootstrap-4") !!}
                 </div>
             @endif
         </div>

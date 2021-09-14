@@ -27,5 +27,5 @@ Route::prefix('admin')->group(function () {
     Route::get('products/search', ['App\Http\Controllers\ProductController', 'search'])->name('products.search');
     Route::resource('products', 'App\Http\Controllers\ProductController');
     Route::resource('pharmacies', 'App\Http\Controllers\PharmacyController');
-    Route::resource('pharmacy.product', 'App\Http\Controllers\ProductPharmacyController')->except(['index', 'show']);
+    Route::resource('pharmacy.product', 'App\Http\Controllers\PharmacyProductController')->except(['index', 'show']);
 });

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pharmacy;
 use Illuminate\Http\Request;
 use App\Http\Repositories\IPharmacyRepository;
 
@@ -22,13 +21,9 @@ class PharmacyController extends Controller
      */
     public function index()
     {
-        $pharmacies = $this->pharmacyRepo->paginate(25);
-
-        if (request()->expectsJson()) {
-            return response()->json($pharmacies, 200);
-        }
-
-        return view('pharmacies.index', compact('pharmacies'));
+        return view('pharmacies.index', [
+            'pharmacies' => $this->pharmacyRepo->paginate(25)
+        ]);
     }
 
     /**
@@ -50,9 +45,9 @@ class PharmacyController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'         => 'required|max:120',
+            'name'      => 'required|max:120',
             'address'   => 'required|max:120',
-            'code'           => 'required|unique:pharmacies,code|max:120'
+            'code'      => 'required|unique:pharmacies,code|max:120'
         ]);
 
         $this->pharmacyRepo->create($data);
@@ -68,10 +63,9 @@ class PharmacyController extends Controller
      */
     public function show($pharmacyID)
     {
-        $pharmacy = $this->pharmacyRepo->find($pharmacyID);
-        $products = $pharmacy->products()->paginate(10);
-
-        return view('pharmacies.show', compact(['pharmacy', 'products']));
+        return view('pharmacies.show', [
+            'pharmacy' => $this->pharmacyRepo->withPaginated($pharmacyID, 'products', 10)
+        ]);
     }
 
     /**
@@ -82,9 +76,9 @@ class PharmacyController extends Controller
      */
     public function edit($pharmacyID)
     {
-        $pharmacy = $this->pharmacyRepo->find($pharmacyID);
-
-        return view('pharmacies.edit', compact('pharmacy'));
+        return view('pharmacies.edit', [
+            'pharmacy' => $this->pharmacyRepo->find($pharmacyID)
+        ]);
     }
 
     /**

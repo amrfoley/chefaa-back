@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('title', 160);
             $table->string('description', 260);
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->string('sku')->unique();            
             $table->timestamps();
             $table->softDeletes();

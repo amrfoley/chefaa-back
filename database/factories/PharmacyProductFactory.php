@@ -3,18 +3,18 @@
 namespace Database\Factories;
 
 use App\Models\Pharmacy;
+use App\Models\PharmacyProduct;
 use App\Models\Product;
-use App\Models\ProductPharmacy;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductPharmacyFactory extends Factory
+class PharmacyProductFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = ProductPharmacy::class;
+    protected $model = PharmacyProduct::class;
 
     /**
      * Define the model's default state.

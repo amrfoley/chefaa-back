@@ -24,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            @if($pharmacies->count() > 0)
-                <h3 class="py-3">Available on ({{ $pharmacies->total() }}) @choice('pharmacy|pharmacies', $pharmacies->total())</h3>
+            @if($product->pharmacies->count() > 0)
+                <h3 class="py-3">Available on ({{ $product->pharmacies->total() }}) @choice('pharmacy|pharmacies', $product->pharmacies->total())</h3>
                 <table class="table table-hover w-100">
                     <thead>
                         <tr>
@@ -40,7 +40,7 @@
                         </tr>
                     </thead>
                     <tbody>       
-                    @foreach($pharmacies as $pharmacy)         
+                    @foreach($product->pharmacies as $pharmacy)         
                         <tr>
                             <th scope="row">{{ $loop->index + 1 }}</th>
                             <td>{{ $pharmacy->name }}</td>
@@ -74,7 +74,7 @@
                     </tbody>
                 </table>
                 <div class="d-flex justify-content-center mt-3">
-                    {!! $pharmacies->links("pagination::bootstrap-4") !!}
+                    {!! $product->pharmacies->links("pagination::bootstrap-4") !!}
                 </div>
             @else
                 <h3 class="mt-5">No pharmacies has this product</h3>

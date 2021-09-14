@@ -14,8 +14,8 @@ class Pharmacy extends Model
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_pharmacy', 'pharmacy_id', 'product_id')
-            ->whereNull('product_pharmacy.deleted_at')
+        return $this->belongsToMany(Product::class, 'pharmacy_product', 'pharmacy_id', 'product_id')
+            ->whereNull('pharmacy_product.deleted_at')
             ->withPivot('price', 'status', 'quantity');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Pharmacy;
+use App\Models\PharmacyProduct;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
@@ -20,6 +22,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $products = Product::count();
+        $pharmacies = Pharmacy::count();
+        $quantity = PharmacyProduct::sum('quantity');
+        return view('home', compact(['products', 'pharmacies', 'quantity']));
     }
 }
