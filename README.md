@@ -9,7 +9,7 @@
 ## Make Sure
 - inside php.ini >> memory_limit=256M or higher
 
-## installaion
+## installation
 - git clone https://github.com/amrfoley/chefaa-back.git
 - cd chefaa-back
 - composer install
@@ -22,7 +22,7 @@
 - php artisan serve
 
 ## CLI Command
-to return cheapest 5 prices
+- to return cheapest 5 prices
     - php artisan product:cheapest {product_id}
-Or cheapest x prices
+- Or cheapest x prices
     - php artisan product:cheapest {product_id} --limit={number}
