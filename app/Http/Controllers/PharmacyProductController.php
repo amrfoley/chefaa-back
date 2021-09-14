@@ -45,7 +45,7 @@ class PharmacyProductController extends Controller
         ]);
 
         $data['status']         = $request->status ? 1 : 0;
-        $data['pharmacy_id']    = $this->pharmacyRepo->find($pharmacyID);
+        $data['pharmacy_id']    = $this->pharmacyRepo->find($pharmacyID)->id;
 
         $this->pharmacyProductRepo->create($data);
 

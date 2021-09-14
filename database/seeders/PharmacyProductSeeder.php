@@ -15,10 +15,10 @@ class PharmacyProductSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 0; $i < 400; $i++)
+        foreach(range(1, 60000) as $index)
         {
             try {
-                DB::table('pharmacy_product')->insert(PharmacyProduct::factory(200)->make()->toArray());                
+                DB::table('pharmacy_product')->insert(PharmacyProduct::factory()->make()->toArray());                
             } catch(\Exception $e) {
                 continue;
             }
