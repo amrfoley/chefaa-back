@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\PharmacyService;
 use Illuminate\Http\Request;
-use App\Http\Repositories\IPharmacyRepository;
 
 class PharmacyController extends Controller
 {
-    protected $pharmacyRepo;
+    protected $pharmacyService;
 
-    public function __construct(IPharmacyRepository $pharmacyRepository)
+    public function __construct(PharmacyService $pharmacyService)
     {
-        $this->pharmacyRepo = $pharmacyRepository;
+        $this->pharmacyService = $pharmacyService;
     }
 
     /**
@@ -22,7 +22,7 @@ class PharmacyController extends Controller
     public function index()
     {
         return view('pharmacies.index', [
-            'pharmacies' => $this->pharmacyRepo->paginate(25)
+            'pharmacies' => $this->pharmacyService->paginate()
         ]);
     }
 
@@ -44,13 +44,7 @@ class PharmacyController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name'      => 'required|max:120',
-            'address'   => 'required|max:120',
-            'code'      => 'required|unique:pharmacies,code|max:120'
-        ]);
-
-        $this->pharmacyRepo->create($data);
+        $this->pharmacyService->create($request);
 
         return redirect()->route('pharmacies.index')->with('success', 'Pharmacy Created');
     }
@@ -64,7 +58,7 @@ class PharmacyController extends Controller
     public function show($pharmacyID)
     {
         return view('pharmacies.show', [
-            'pharmacy' => $this->pharmacyRepo->withPaginated($pharmacyID, 'products', 10)
+            'pharmacy' => $this->pharmacyService->withProducts($pharmacyID)
         ]);
     }
 
@@ -77,7 +71,7 @@ class PharmacyController extends Controller
     public function edit($pharmacyID)
     {
         return view('pharmacies.edit', [
-            'pharmacy' => $this->pharmacyRepo->find($pharmacyID)
+            'pharmacy' => $this->pharmacyService->find($pharmacyID)
         ]);
     }
 
@@ -90,13 +84,7 @@ class PharmacyController extends Controller
      */
     public function update(Request $request, $pharmacyID)
     {
-        $data = $request->validate([
-            'name'         => 'required|max:160',
-            'address'   => 'required|max:260',
-            'code'           => 'required|unique:pharmacies,code,'.$pharmacyID
-        ]);
-
-        $this->pharmacyRepo->update($data, $pharmacyID);
+        $this->pharmacyService->update($request, $pharmacyID);
 
         return redirect()
             ->route('pharmacies.show', ['pharmacy' => $pharmacyID])
@@ -111,7 +99,7 @@ class PharmacyController extends Controller
      */
     public function destroy($pharmacyID)
     {
-        $this->pharmacyRepo->delete($pharmacyID);
+        $this->pharmacyService->destroy($pharmacyID);
 
         return redirect()->back();
     }

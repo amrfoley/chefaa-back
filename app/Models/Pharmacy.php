@@ -11,6 +11,8 @@ class Pharmacy extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['name', 'code', 'address'];
+    
+    protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
 
     public function products()
     {

@@ -30,10 +30,11 @@
                         type="checkbox" 
                         id="status" 
                         name="status"
+                        value="0"
                     />
                     <label class="form-check-label" for="status">Availability</label>
                 </div>
-
+                <input type="hidden" name="pharmacy_id" value="{{ $pharmacy->id }}">
                 <button type="submit" class="btn btn-lg btn-success mt-3">Save</button>
             </form>
         </div>

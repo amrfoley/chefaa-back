@@ -14,17 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Auth::routes();
 
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::prefix('admin')->group(function () {
     Route::get('', ['App\Http\Controllers\HomeController', 'index'])->name('home');
     Route::get('products/search', ['App\Http\Controllers\ProductController', 'search'])->name('products.search');
+    Route::get('products/ajaxSearch', ['App\Http\Controllers\ProductController', 'ajaxSearch'])->name('products.ajaxSearch');
     Route::resource('products', 'App\Http\Controllers\ProductController');
     Route::resource('pharmacies', 'App\Http\Controllers\PharmacyController');
     Route::resource('pharmacy.product', 'App\Http\Controllers\PharmacyProductController')->except(['index', 'show']);

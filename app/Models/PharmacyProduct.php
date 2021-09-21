@@ -12,5 +12,12 @@ class PharmacyProduct extends Model
 
     protected $fillable = ['price', 'status', 'quantity', 'product_id', 'pharmacy_id'];
 
+    protected $hidden = ['created_at', 'deleted_at', 'updated_at'];
+
     protected $table = 'pharmacy_product';
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 }

@@ -1,7 +1,7 @@
 $('#searching').select2();
 $('#searching').select2({
     ajax: {
-        url: '/admin/products/search',
+        url: '/admin/products/ajaxSearch',
         dataType: 'json',
         method: "GET",
         dataType: 'json',

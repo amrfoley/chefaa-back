@@ -3,14 +3,14 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Http\Repositories\IRepository;
-use App\Http\Repositories\IProductRepository;
-use App\Http\Repositories\IPharmacyRepository;
-use App\Http\Repositories\IPharmacyProductRepository;
-use App\Http\Repositories\Eloquent\BaseRepository;
-use App\Http\Repositories\Eloquent\ProductRepository;
-use App\Http\Repositories\Eloquent\PharmachyRepository;
-use App\Http\Repositories\Eloquent\PharmachyProductRepository;
+use App\Repositories\IRepository;
+use App\Repositories\IProductRepository;
+use App\Repositories\IPharmacyRepository;
+use App\Repositories\IPharmacyProductRepository;
+use App\Repositories\Eloquent\BaseRepository;
+use App\Repositories\Eloquent\ProductRepository;
+use App\Repositories\Eloquent\PharmachyRepository;
+use App\Repositories\Eloquent\PharmachyProductRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {

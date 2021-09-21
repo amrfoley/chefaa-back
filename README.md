@@ -13,6 +13,8 @@
 - git clone https://github.com/amrfoley/chefaa-back.git
 - cd chefaa-back
 - composer install
+- php artisan key:generate
+- php artisan link:storage
 - npm install
 - npm run dev
 - cp .env.example .env

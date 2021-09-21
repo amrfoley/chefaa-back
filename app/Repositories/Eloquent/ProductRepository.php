@@ -1,9 +1,9 @@
 <?php
-namespace App\Http\Repositories\Eloquent;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Product;
 use Illuminate\Support\Facades\File;
-use App\Http\Repositories\IProductRepository;
+use App\Repositories\IProductRepository;
 
 class ProductRepository extends BaseRepository implements IProductRepository
 {
@@ -12,14 +12,6 @@ class ProductRepository extends BaseRepository implements IProductRepository
     public function __construct(Product $product)
     {
         $this->model = $product;
-    }
-
-    public function with($productID, $relation, $options, $relationID)
-    {
-        $product = $this->model->find($productID);
-
-        return $product->$relation ? 
-            $product->setRelation($relation, $product->$relation()->where($options)->find($relationID)) : $product;
     }
 
     public function withPaginated($productID, $relation, $options, $perPage)
@@ -56,7 +48,7 @@ class ProductRepository extends BaseRepository implements IProductRepository
         return true;
     }
 
-    public function search($query)
+    public function ajaxSearch($query)
     {
         return $this->model->select(['id', 'title'])
             ->where('title', 'LIKE', "%$query%")
@@ -64,7 +56,7 @@ class ProductRepository extends BaseRepository implements IProductRepository
             ->get();
     }
 
-    public function searchPaginated($query, $perPage = 25)
+    public function search($query, $perPage = 25)
     {
         return $this->model
             ->where('title', 'LIKE', "%$query%")

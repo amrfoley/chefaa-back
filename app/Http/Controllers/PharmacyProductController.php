@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Repositories\IPharmacyProductRepository;
-use App\Http\Repositories\IPharmacyRepository;
+use App\Services\PharmacyProductService;
+use App\Services\PharmacyService;
 use Illuminate\Http\Request;
 
 class PharmacyProductController extends Controller
 {
-    protected $pharmacyRepo, $pharmacyProductRepo;
+    protected $pharmacyService, $pharmacyProductService;
 
     public function __construct(
-        IPharmacyRepository $pharmacyRepository,
-        IPharmacyProductRepository $iPharmacyProductRepository
+        PharmacyService $pharmacyService,
+        PharmacyProductService $iPharmacyProductService
     ) {
-        $this->pharmacyRepo         = $pharmacyRepository;
-        $this->pharmacyProductRepo  = $iPharmacyProductRepository;
+        $this->pharmacyService         = $pharmacyService;
+        $this->pharmacyProductService  = $iPharmacyProductService;
     }
     
     /**
@@ -26,7 +26,7 @@ class PharmacyProductController extends Controller
     public function create($pharmacyID)
     {
         return view('pharmacyproduct.create', [
-            'pharmacy' => $this->pharmacyRepo->find($pharmacyID)
+            'pharmacy' => $this->pharmacyService->find($pharmacyID)
         ]);
     }
 
@@ -38,16 +38,7 @@ class PharmacyProductController extends Controller
      */
     public function store(Request $request, $pharmacyID)
     {
-        $data = $request->validate([
-            'price'     => 'required|numeric|between:1,9999.99',
-            'quantity'  => 'required|integer|between:1,9999999',
-            'product_id'   => 'required|exists:products,id',
-        ]);
-
-        $data['status']         = $request->status ? 1 : 0;
-        $data['pharmacy_id']    = $this->pharmacyRepo->find($pharmacyID)->id;
-
-        $this->pharmacyProductRepo->create($data);
+        $this->pharmacyProductService->create($request);
 
         return redirect()->route('pharmacies.show', $pharmacyID)->with('success', 'Product imported');
     }
@@ -61,7 +52,7 @@ class PharmacyProductController extends Controller
     public function edit($pharmacyID, $productID)
     {
         return view('pharmacyproduct.edit', [
-            'pharmacy' => $this->pharmacyRepo->with($pharmacyID, 'products', $productID)
+            'pharmacy' => $this->pharmacyService->withProducts($pharmacyID, $productID)
         ]);
     }
 
@@ -74,14 +65,7 @@ class PharmacyProductController extends Controller
      */
     public function update(Request $request, $pharmacyID, $productID)
     {
-        $data = $request->validate([
-            'price'     => 'required|numeric|between:1,9999.99',
-            'quantity'  => 'required|integer|between:1,9999999'
-        ]);
-
-        $data['status'] = $request->status === 'on' ? 1 : 0;
-
-        $this->pharmacyProductRepo->update($pharmacyID, $productID, $data);
+        $this->pharmacyProductService->update($request, $pharmacyID, $productID);
 
         return redirect()->back()->with('success', "Product updated");
     }
@@ -94,7 +78,7 @@ class PharmacyProductController extends Controller
      */
     public function destroy($pharmacyID, $productID)
     {
-        $this->pharmacyProductRepo->delete($pharmacyID, $productID);
+        $this->pharmacyProductService->destroy($pharmacyID, $productID);
 
         return redirect()->route('pharmacies.show', $pharmacyID)->with('success', 'product detached');
     }

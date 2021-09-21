@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\PharmacyProduct;
+use App\Models\Pharmacy;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class PharmacyProductSeeder extends Seeder
 {
@@ -15,13 +15,14 @@ class PharmacyProductSeeder extends Seeder
      */
     public function run()
     {
-        foreach(range(1, 60000) as $index)
+        foreach(Pharmacy::cursor()->random(10000) as $pharmacy)
         {
-            try {
-                DB::table('pharmacy_product')->insert(PharmacyProduct::factory()->make()->toArray());                
-            } catch(\Exception $e) {
-                continue;
-            }
+            $products = Product::cursor()->random(random_int(0, 50))->pluck('id')->toArray();
+            $pharmacy->products()->attach($products, [
+                'price'         => random_int(1000, 99999) / 100,
+                'quantity'      => random_int(0, 200),
+                'status'        => random_int(0, 1),
+            ]);                
         }
     }
 }

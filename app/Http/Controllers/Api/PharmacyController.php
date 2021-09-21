@@ -3,29 +3,28 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\IPharmacyRepository;
-use Illuminate\Http\Request;
+use App\Services\PharmacyService;
 
 class PharmacyController extends Controller
 {
-    protected $pharmacyRepo;
+    protected $pharmacyService;
 
-    public function __construct(IPharmacyRepository $pharmacyRepository)
+    public function __construct(PharmacyService $pharmacyService)
     {
-        $this->pharmacyRepo = $pharmacyRepository;
+        $this->pharmacyService = $pharmacyService;
     }
     
     public function index()
     {
         return response()->json([
-            'pharmacies' => $this->pharmacyRepo->paginate(25)
+            'pharmacies' => $this->pharmacyService->paginate()
         ]);
     }
 
     public function show($pharmacyID)
     {
         return view('pharmacies.show', [
-            'pharmacy' => $this->pharmacyRepo->withPaginated($pharmacyID, 'products', 10)
+            'pharmacy' => $this->pharmacyService->withProducts($pharmacyID)
         ]);
     }
 }

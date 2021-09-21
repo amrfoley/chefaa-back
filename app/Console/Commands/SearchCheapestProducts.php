@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\Product;
+use App\Services\PharmacyProductService;
 use Illuminate\Console\Command;
 
 class SearchCheapestProducts extends Command
@@ -36,30 +37,14 @@ class SearchCheapestProducts extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(PharmacyProductService $pharmacyProductService)
     {
         $limit = $this->option('limit');
         
         $this->line("Searching for the most $limit cheapest prices...");
         
-        $product = Product::select(['id', 'title'])
-            ->where('id', $this->argument('id'))
-            ->with(['pharmacies' => function($q) use($limit) {
-                $q->select('price')->orderby('price', 'asc')->limit($limit);
-            }])
-            ->get();
+        $products = $pharmacyProductService->cheapest($this->argument('id'), $limit);
 
-        return $product->count() === 0 ? $this->error('Product not found') : $this->info($this->formatJson($product));
-    }
-
-    protected function formatJson($product)
-    {
-        return $product->map(function($p) {
-            return [
-                'id'        => $p->id,
-                'title'     => $p->title,
-                'prices'    => $p->pharmacies->map(function($pivot) { return $pivot->price; })
-            ];
-        })->toJson();
+        return $products->count() === 0 ? $this->error('Product not found') : $this->info($products->toJson());
     }
 }

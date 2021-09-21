@@ -3,35 +3,34 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Repositories\IProductRepository;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    protected $productRepo;
+    protected $productService;
 
-    public function __construct(IProductRepository $productRepository)
+    public function __construct(ProductService $productService)
     {
-        $this->productRepo = $productRepository;
+        $this->productService = $productService;
     }
 
     public function index()
     {
         return response()->json([
-            'products' => $this->productRepo->paginate(25)
+            'products' => $this->productService->paginate()
         ], 200);
     }
 
     public function show($productID)
     {
         return response()->json([
-            'product' => $this->productRepo
-                ->withPaginated($productID, 'pharmacies', [['status', 1]], 10)
+            'product' => $this->productService->withPharmacies($productID, true)
         ]);
     }
 
     public function search(Request $request)
     {
-        return $this->productRepo->searchPaginated($request->search, 25);
+        return $this->productService->search($request);
     }
 }

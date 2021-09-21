@@ -1,8 +1,8 @@
 <?php
-namespace App\Http\Repositories\Eloquent;
+namespace App\Repositories\Eloquent;
 
 use App\Models\Pharmacy;
-use App\Http\Repositories\IPharmacyRepository;
+use App\Repositories\IPharmacyRepository;
 
 class PharmachyRepository extends BaseRepository implements IPharmacyRepository
 {

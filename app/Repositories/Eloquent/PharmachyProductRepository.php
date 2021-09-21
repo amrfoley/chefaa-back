@@ -1,7 +1,7 @@
 <?php
-namespace App\Http\Repositories\Eloquent;
+namespace App\Repositories\Eloquent;
 
-use App\Http\Repositories\IPharmacyProductRepository;
+use App\Repositories\IPharmacyProductRepository;
 use App\Models\PharmacyProduct;
 
 class PharmachyProductRepository implements IPharmacyProductRepository
@@ -31,5 +31,18 @@ class PharmachyProductRepository implements IPharmacyProductRepository
     public function create($data)
     {
         return $this->model->create($data);
+    }
+
+    public function cheapest(int $productID, int $limit)
+    {
+        $products = $this->model->where('product_id', $productID)->orderby('price', 'asc')->limit($limit)->get();
+
+        return $products->map(function($pharmacyProduct) {
+            return [
+                'id'        => $pharmacyProduct->product->id,
+                'title'     => $pharmacyProduct->product->title,
+                'prices'    => $pharmacyProduct->price
+            ];
+        });
     }
 }
