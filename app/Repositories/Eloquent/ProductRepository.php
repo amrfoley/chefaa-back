@@ -35,11 +35,10 @@ class ProductRepository extends BaseRepository implements IProductRepository
         // Upload Image
         $imageFile->storeAs('public/images', $fileNameToStore);
 
-        $product = $this->model->find($productID);
-        
-        // Delete Old Image
-        if (File::exists(public_path('storage/'.$product->image))) {
-            File::delete(public_path('storage/'.$product->image));
+        $product = $this->model->find($productID);        
+
+        if (!empty($product->image) && File::exists(public_path(substr($product->image, strpos($product->image, 'storage/'))))) {
+            File::delete(public_path(substr($product->image, strpos($product->image, 'storage/'))));
         }
 
         $product->image = 'images/'.$fileNameToStore;

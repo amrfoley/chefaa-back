@@ -14,7 +14,7 @@
 - cd chefaa-back
 - composer install
 - php artisan key:generate
-- php artisan link:storage
+- php artisan storage:link
 - npm install
 - npm run dev
 - cp .env.example .env

@@ -14,3 +14,7 @@ $(document).on('change', '#upload-image', function() {
         elm.append(imgElm);
     }
 });
+
+$(document).on('change', '#product-status', function () {
+    $(this).is(':checked') ? $(this).attr('value', '1') : $(this).attr('value', '0');
+});

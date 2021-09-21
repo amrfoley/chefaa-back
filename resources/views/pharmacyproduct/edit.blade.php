@@ -37,13 +37,15 @@
     <div class="form-check form-switch mb-3">
         <input class="form-check-input" 
             type="checkbox" 
-            id="status" 
             name="status"
+            id="product-status" 
+            value="{{ $pharmacy->products->pivot->status }}"
             {{ $pharmacy->products->pivot->status === 1 ? 'checked' : '' }}
         />
         <label class="form-check-label" for="status">Availability</label>
     </div>
-
+    <input type="hidden" name="pharmacy_id" value="{{ $pharmacy->id }}" />
+    <input type="hidden" name="product_id" value="{{ $pharmacy->products->id }}" />
     <button type="submit" class="btn btn-lg btn-success mt-3">Save</button>
 </form>
 @endsection

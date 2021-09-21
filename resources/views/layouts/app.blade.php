@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('storage/icons/favicon.ico') }}" type="image/x-icon">    
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -24,7 +24,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid justify-content-center">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    <img src="{{ asset('storage/images/logo.png') }}" alt="chefaa logo" height="40px" class="d-inline-block align-text-top" />
+                    <img src="{{ asset('images/logo.png') }}" alt="chefaa logo" height="40px" class="d-inline-block align-text-top" />
                 </a>
             </div>
         </nav>

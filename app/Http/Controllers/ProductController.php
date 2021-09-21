@@ -102,7 +102,7 @@ class ProductController extends Controller
     {
         $this->productService->destroy($productID);
 
-        return redirect()->back();
+        return redirect()->back()->with(['success' => 'Product Deleted']);
     }
 
     public function ajaxSearch(Request $request)
