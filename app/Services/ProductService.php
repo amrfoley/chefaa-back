@@ -36,12 +36,12 @@ class ProductService
 
     public function search(Request $request, int $per_page = 25)
     {
-        return $this->productRepo->search($request->search, $per_page);
+        return empty($request->search) ? '' : $this->productRepo->search($request->search, $per_page);
     }
 
     public function ajaxSearch(Request $request)
     {
-        return $this->productRepo->ajaxSearch($request->search);
+        return empty($request->search) ? '' : $this->productRepo->ajaxSearch($request->search);
     }
 
     public function create(Request $request)

@@ -6,7 +6,10 @@
         <div class="col-md-12">
             <div class="heading mb-3 d-flex align-items-center justify-content-between">
                 <h2>All Products ({{ $products->total() }})</h2>
-                <a href="{{ route('products.create') }}" class="btn btn-lg btn-success">Add New</a>
+                <div class="product-actions">
+                    <a href="{{ route('products.create') }}" class="btn btn-lg btn-success">Add New</a>
+                    <a href="{{ route('products.search') }}" class="btn btn-lg btn-primary ml-2">Search</a>
+                </div>
             </div>
             <table class="table table-hover w-100">
                 <thead>

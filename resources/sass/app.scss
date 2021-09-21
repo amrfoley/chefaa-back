@@ -31,3 +31,26 @@
     cursor: inherit;
     display: block;
 }
+
+.searched-products {
+    margin: -0.25rem;
+    .card {
+        transition: all 0.2s;
+        width: 23%;
+        box-sizing: border-box;
+        @media (max-width: 900px) {
+            width: 31%;
+        }
+        @media (max-width: 768px) {
+            width: 48%;
+        }
+        @media (max-width: 480px) {
+            width: 100%;
+        }
+        &:hover {
+            img {
+                transform: scale(1.04);
+            }
+        }
+    }
+}

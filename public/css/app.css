@@ -10706,3 +10706,30 @@ h3 {
   cursor: inherit;
   display: block;
 }
+
+.searched-products {
+  margin: -0.25rem;
+}
+.searched-products .card {
+  transition: all 0.2s;
+  width: 23%;
+  box-sizing: border-box;
+}
+@media (max-width: 900px) {
+  .searched-products .card {
+    width: 31%;
+  }
+}
+@media (max-width: 768px) {
+  .searched-products .card {
+    width: 48%;
+  }
+}
+@media (max-width: 480px) {
+  .searched-products .card {
+    width: 100%;
+  }
+}
+.searched-products .card:hover img {
+  transform: scale(1.04);
+}

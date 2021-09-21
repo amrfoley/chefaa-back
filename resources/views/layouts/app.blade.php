@@ -32,11 +32,11 @@
         <main class="py-4">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <!-- The sidebar -->
                         @include('layouts.side-bar')
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-10">
                         <!-- flash messages -->
                         @include('layouts.flash-messages')    
                         <!-- content -->
